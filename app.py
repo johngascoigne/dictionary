@@ -17,8 +17,12 @@ def create_connection(db_file):
     return None
 
 @app.route('/')
-def render_homepage():
+def render_home():
     return render_template('home.html')
+
+@app.route('/contact')
+def render_contact():
+    return render_template('contact.html')
 
 app.run(host='0.0.0.0', debug=True)
 

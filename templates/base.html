@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-   <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="shortcut icon" href="https://media.gq.com/photos/5af8e43a76f53a4b10f705f2/master/w_1600%2Cc_limit/lil-uzi-vert-gq-5.jpg">
    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Suez+One&display=swap" rel="stylesheet">
    <title>{% block title %}{% endblock %}</title>
    <meta name="Description" content="Author: john gasc, Content: A dictionary to convert maori words to english.">
+   <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -22,7 +23,6 @@
          <span></span>
          <ul>
                 <li><a href="\">Home</a></li>
-
          </ul>
       </nav>
 
@@ -41,6 +41,7 @@
       <footer>
          <p>
             &copy; john gascoign
+            <a href="/contact">Contact</a>
          </p>
       </footer>
 
