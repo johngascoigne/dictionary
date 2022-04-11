@@ -44,3 +44,7 @@ li a:hover {
   padding: 14px 16px;
   text-decoration: none;
 }
+
+.button-group {
+  padding-top: 10px;
+}
