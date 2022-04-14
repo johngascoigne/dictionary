@@ -3,14 +3,28 @@
     box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #1a1414;
+  border-radius: 8px;
+  border: 3px solid #ffffff;
+}
+
 main {
   padding-top: 2em;
 }
 
 ul {
   list-style-type: none;
-  margin: 0;
   padding: 0;
+  margin: 0;
   overflow: hidden;
   background-color: #1a1414;
   position: fixed;
@@ -33,6 +47,7 @@ li a {
 
 li a:hover {
   background-color: orange;
+  transition: background-color .2s;
 }
 
 .title {
@@ -46,4 +61,28 @@ li a:hover {
 
 .button-group {
   padding-top: 10px;
+}
+
+  
+footer {
+  text-align: center;
+  background-color: #1a1414;
+  margin: 10px;
+  padding: 3px;
+  border-radius: 8px;
+  color: white;
+}
+
+footer a:active {
+  color: orange;
+}
+
+footer a:visited {
+  color: orange;
+}
+
+footer a:hover {
+  transition: color .2s;
+  color: white;
+  
 }

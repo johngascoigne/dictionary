@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="shortcut icon" href="https://media.gq.com/photos/5af8e43a76f53a4b10f705f2/master/w_1600%2Cc_limit/lil-uzi-vert-gq-5.jpg">
-   <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Suez+One&display=swap" rel="stylesheet">
    <title>{% block title %}{% endblock %}</title>
    <meta name="Description" content="Author: john gasc, Content: A dictionary to convert maori words to english.">
    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
@@ -23,13 +20,6 @@
             <div class="title">j dictionary</div>
           </ul>
       </nav>
-
-
-      <!--
-      =====================================================
-      == Content row of the template.                 ==
-      =====================================================
-      -->
 
       <main>
             {% block main%}{% endblock %}
