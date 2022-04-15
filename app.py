@@ -9,7 +9,6 @@ app = Flask(__name__)
 app.secret_key = "banana"
 
 
-
 def create_connection(db_file):
     try:
         connection = sqlite3.connect(db_file)
@@ -23,6 +22,7 @@ def create_connection(db_file):
 @app.route('/')
 def render_homepage():
     return render_template('home.html')
+
 
 @app.route('/contact')
 def render_contact_page():
@@ -62,6 +62,7 @@ def render_login_page():
         return redirect('/')
     return render_template('login.html', logged_in=is_logged_in())
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def render_signup_page():
     if request.method == "POST":
@@ -93,6 +94,7 @@ def render_signup_page():
 
     return render_template('signup.html')
 
+
 def is_logged_in():
     if session.get("email") is None:
         print("Not logged in")
@@ -100,5 +102,6 @@ def is_logged_in():
     else:
         print("Logged in")
         return True
+
 
 app.run(host='0.0.0.0', debug=True)

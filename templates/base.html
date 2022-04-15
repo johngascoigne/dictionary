@@ -1,38 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-   <title>{% block title %}{% endblock %}</title>
-   <meta name="Description" content="Author: john gasc, Content: A dictionary to convert maori words to english.">
-   <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="Description" content="Author: john gasc, Content: A dictionary to convert maori words to english.">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 
 <body>
-   <div id="container">
-      <header>
-         <h1>{% block heading %}{% endblock %}</h1>
-      </header>
+<div id="container">
+    <header>
+        <h1>{% block heading %}{% endblock %}</h1>
+    </header>
 
-       <nav>
-         <ul>
-            <li><a href="\">Home</a></li>
-            <li><a href="/login">special 😈</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <div class="title">j dictionary</div>
-          </ul>
-      </nav>
+    <nav>
+        <ul>
+            <li class="category-button">
+                <div class="dropdown">
+                    <button onclick="myFunction()" class="dropbtn"><img src="/static/icons/sidebar-icon.svg"></button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="/hodme">dd</a>
+                        <a href="/abdout">Abodut</a>
+                        <a href="/condtact">Conddddtact</a>
+                    </div>
+                </div>
+            </li>
+            <li><a href="/"><img src="/static/icons/home-icon.svg"></a></li>
+            <li><a href="/login"><img src="/static/icons/user-icon.svg"></a></li>
+            <li><a href="/contact"><img src="/static/icons/info-icon.svg"></a></li>
 
-      <main>
-            {% block main%}{% endblock %}
-        </main>
+            <script>
+                /* When the user clicks on the button,
+                toggle between hiding and showing the dropdown content */
+                function myFunction() {
+                    document.getElementById("myDropdown").classList.toggle("show");
+                }
+
+                // Close the dropdown if the user clicks outside of it
+                window.onclick = function (event) {
+                    if (!event.target.matches('.dropbtn')) {
+                        var dropdowns = document.getElementsByClassName("dropdown-content");
+                        var i;
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                        }
+                    }
+                }
+            </script>
+
+        </ul>
+    </nav>
+
+    <main>
+        {% block main%}{% endblock %}
+    </main>
 
 
-      <footer>
-         <p>
+    <footer>
+        <p>
             &copy; john gascoign
             <a href="/contact">Contact</a>
-         </p>
-      </footer>
+        </p>
+    </footer>
 
-   </div>
+</div>
 </body>
 </html>
