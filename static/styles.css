@@ -102,6 +102,10 @@ footer a:hover {
     color: white;
 }
 
+.dropbtn > img {
+    pointer-events: none
+}
+
 .dropbtn:hover, .dropbtn:focus {
     background-color: orange;
     transition: background-color .2s;
@@ -135,4 +139,13 @@ footer a:hover {
 
 .show {
     display: block;
+}
+
+.word_title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.word_author {
+    color: #666;
 }

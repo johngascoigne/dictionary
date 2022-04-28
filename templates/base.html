@@ -18,12 +18,13 @@
                 <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn"><img src="/static/icons/sidebar-icon.svg"></button>
                     <div id="myDropdown" class="dropdown-content">
-                        <a href="/hodme">dd</a>
-                        <a href="/abdout">Abodut</a>
-                        <a href="/condtact">Conddddtact</a>
+                        {% for category in category_name %}
+                        <a href="/category/{{ category[0] }}">{{ category[1] }}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </li>
+
             <li><a href="/"><img src="/static/icons/home-icon.svg"></a></li>
             <li><a href="/login"><img src="/static/icons/user-icon.svg"></a></li>
             <li><a href="/contact"><img src="/static/icons/info-icon.svg"></a></li>
