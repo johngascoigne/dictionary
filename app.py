@@ -46,12 +46,10 @@ def fetch_authored_words(passed_user):
     for i in word_query:
         x = int(i[4])
         x /= 1000
-        fetched_words.append([i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
-
+        fetched_words.append(
+            [i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
 
     return fetched_words
-
-
 
 
 def fetch_category_names():
@@ -73,8 +71,7 @@ def fetch_category_names():
     con.close()
     return lower_categories
 
-
-def fetch_categories():
+def fetch_categories(category_name):
     con = create_connection(DB_NAME)
 
     query = "SELECT id, name, description FROM category"
@@ -84,8 +81,19 @@ def fetch_categories():
     fetched_categories = cur.fetchall()
 
     con.close()
-    return fetched_categories
+    found_category = -1
+    for i in range(len(fetched_categories)):
+        x = fetched_categories[i][1]
+        if x.lower() == category_name.lower():
+            found_category = i
+            break
 
+    if found_category != -1:
+        output_category = fetched_categories[found_category]
+        return output_category
+
+    else:
+        return False
 
 def create_connection(db_file):
     try:
@@ -141,7 +149,7 @@ def render_login_page():
         session['username'] = username
         print(session)
         return redirect('/')
-    return render_template('login.html', logged_in=is_logged_in(), categories=fetch_categories())
+    return render_template('login.html', category_name=fetch_category_names(), logged_in=is_logged_in(), )
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -179,7 +187,8 @@ def render_signup_page():
 @app.route('/category/<category>')
 def render_category_page(category):
     return render_template('category.html', category_name=fetch_category_names(), cur_category=category,
-                           category_words=fetch_category_words(category), logged_in=is_logged_in)
+                           category_words=fetch_category_words(category), logged_in=is_logged_in,
+                           category_data=fetch_categories(category), )
 
 
 @app.route('/user/<username>')
