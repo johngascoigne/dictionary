@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="SQLite - dictionary.db" uuid="c1b1d369-eeab-4d25-a402-6d9ec1521e45">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>536f6f73-e1ec-4f60-bf8f-b2176b17cf38</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:D:\Desktop\pcharm\dictionary.db</jdbc-url>
@@ -10,6 +10,18 @@
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="dictionary" uuid="c9fd9908-96b4-4e69-a263-805b51508c2f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\18184\PycharmProjects\dictionary\dictionary.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.36.0.3/sqlite-jdbc-3.36.0.3.jar</url>
         </library>
       </libraries>
     </data-source>

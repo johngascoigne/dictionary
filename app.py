@@ -1,9 +1,8 @@
 import sqlite3
+from datetime import datetime
 from sqlite3 import Error
 
 from flask import Flask, render_template, request, redirect, session
-
-from datetime import datetime
 
 DB_NAME = "dictionary.db"
 
@@ -71,6 +70,7 @@ def fetch_category_names():
     con.close()
     return lower_categories
 
+
 def fetch_categories(category_name):
     con = create_connection(DB_NAME)
 
@@ -94,6 +94,7 @@ def fetch_categories(category_name):
 
     else:
         return False
+
 
 def create_connection(db_file):
     try:
@@ -197,7 +198,7 @@ def render_user_page(username):
     authored_words = len(word_query)
     return render_template('user.html', category_name=fetch_category_names(), cur_user=username,
                            user_words=word_query, authored_word_count=authored_words,
-                           logged_in=is_logged_in)
+                           logged_in=is_logged_in, )
 
 
 def is_logged_in():
