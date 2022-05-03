@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.secret_key = "banana"
 
 
+# fetch all words in a certain category
 def fetch_category_words(passed_category):
     con = create_connection(DB_NAME)
 
@@ -31,6 +32,7 @@ def fetch_category_words(passed_category):
     return fetched_words
 
 
+# fetch all words from a certain user
 def fetch_authored_words(passed_user):
     con = create_connection(DB_NAME)
 
@@ -51,6 +53,7 @@ def fetch_authored_words(passed_user):
     return fetched_words
 
 
+# fetch all names of categories and make them lowercase (for urls)
 def fetch_category_names():
     con = create_connection(DB_NAME)
 
@@ -71,6 +74,7 @@ def fetch_category_names():
     return lower_categories
 
 
+# fetch data from a category
 def fetch_categories(category_name):
     con = create_connection(DB_NAME)
 
@@ -120,7 +124,8 @@ def render_contact_page():
 def render_login_page():
     if is_logged_in():
         if session.get('username') is not None:
-            return redirect('/user/' + str(session.get('username')))
+            return redirect('/user/' + str(
+                session.get('username')))  # redirects the user to their own userpage once they've logged in
         else:
             return redirect('/login?error=Session+not+found')
 
@@ -185,6 +190,7 @@ def render_signup_page():
     return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in)
 
 
+# unique category pages for all categories
 @app.route('/category/<category>')
 def render_category_page(category):
     return render_template('category.html', category_name=fetch_category_names(), cur_category=category,
@@ -192,10 +198,11 @@ def render_category_page(category):
                            category_data=fetch_categories(category), )
 
 
+#  unique user pages for all users
 @app.route('/user/<username>')
 def render_user_page(username):
-    word_query = fetch_authored_words(username)
-    authored_words = len(word_query)
+    word_query = fetch_authored_words(username)  # get all authored words from the user
+    authored_words = len(word_query)  # get the number of authored words (to be displayed on the user's page)
     return render_template('user.html', category_name=fetch_category_names(), cur_user=username,
                            user_words=word_query, authored_word_count=authored_words,
                            logged_in=is_logged_in, )
