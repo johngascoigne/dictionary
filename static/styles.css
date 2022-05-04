@@ -1,3 +1,9 @@
+:root {
+    --dark: #1a1414;
+    --accent: orange;
+    --white: floralwhite;
+}
+
 * {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     box-sizing: border-box;
@@ -8,24 +14,32 @@
 }
 
 *::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: var(--white);
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: #1a1414;
+    background-color: var(--dark);
     border-radius: 8px;
-    border: 3px solid #ffffff;
+    border: 3px solid var(--white);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent);
+    border-radius: 8px;
+    border: 3px solid var(--white);
 }
 
 main {
     padding-top: 2.5em;
+    padding-bottom: 2.5em;
+
 }
 
 ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    background-color: #1a1414;
+    background-color: var(--dark);
     position: fixed;
     top: 0;
     left: 0;
@@ -38,19 +52,19 @@ li {
 
 li a {
     display: block;
-    color: white;
+    color: var(--white);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 li a:hover {
-    background-color: orange;
+    background-color: var(--accent);
     transition: background-color .2s;
 }
 
 li a {
-    background-color: #1a1414;
+    background-color: var(--dark);
     transition: background-color .2s;
 }
 
@@ -61,7 +75,7 @@ li a {
 .title {
     float: right;
     display: block;
-    color: white;
+    color: var(--white);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -74,33 +88,33 @@ li a {
 
 footer {
     text-align: center;
-    color: white;
-    background-color: #1a1414;
+    color: var(--white);
+    background-color: var(--dark);
     margin: 10px;
     padding: 3px;
     border-radius: 8px;
 }
 
 a:link {
-    color: orange;
+    color: var(--accent);
 }
 
 a:visited {
-    color: orange;
+    color: var(--accent);
 }
 
 a:active {
-    color: orange;
+    color: var(--accent);
 }
 
 footer a:hover {
     transition: color .2s;
-    color: white;
+    color: var(--white);
 }
 
 footer a {
     transition: color .2s;
-    color: orange;
+    color: var(--accent);
 }
 
 .dropbtn {
@@ -108,13 +122,13 @@ footer a {
     font-size: 16px;
     border: none;
     cursor: pointer;
-    background-color: #1a1414;
-    color: white;
+    background-color: var(--dark);
+    color: var(--white);
 }
 
 .dropbtn {
     transition: background-color .2s;
-    background-color: #1a1414;
+    background-color: var(--dark);
 }
 
 .dropbtn > img {
@@ -122,7 +136,7 @@ footer a {
 }
 
 .dropbtn:hover, .dropbtn:focus {
-    background-color: orange;
+    background-color: var(--accent);
     transition: background-color .2s;
 }
 
@@ -136,23 +150,23 @@ footer a {
     position: absolute;
     min-width: 160px;
     z-index: 1;
-    background-color: #1a1414;
-    color: white
+    background-color: var(--dark);
+    color: var(--white)
 }
 
 .dropdown-content a {
-    color: white;
+    color: var(--white);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
 .dropdown a:hover {
-    background-color: orange;
+    background-color: var(--accent);
     transition: background-color .2s;
 }
 .dropdown a{
-    background-color: #1a1414;
+    background-color: var(--dark);
     transition: background-color .2s;
 }
 
@@ -170,7 +184,7 @@ footer a {
 }
 
 .user_page_accent {
-    color: orange;
+    color: var(--accent);
 }
 
 
