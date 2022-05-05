@@ -68,7 +68,7 @@ li a {
     transition: background-color .2s;
 }
 
-.category-button {
+.left-button-element {
     float: left;
 }
 
@@ -187,4 +187,6 @@ footer a {
     color: var(--accent);
 }
 
-
+.form-element {
+    padding-bottom: 1em;
+}

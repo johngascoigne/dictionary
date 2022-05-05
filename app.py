@@ -75,8 +75,21 @@ def fetch_category_names():
     return lower_categories
 
 
+def fetch_categories():
+    con = create_connection(DB_NAME)
+
+    query = "SELECT * FROM category"
+
+    cur = con.cursor()
+    cur.execute(query)
+    fetched_categories = cur.fetchall()
+
+    con.close()
+    return fetched_categories
+
+
 # fetch data from a category
-def fetch_categories(category_name):
+def fetch_category_data(category_name):
     con = create_connection(DB_NAME)
 
     query = "SELECT id, name, description FROM category"
@@ -190,6 +203,7 @@ def render_signup_page():
 
     return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in)
 
+
 @app.route('/addword', methods=['GET', 'POST'])
 def render_addword_page():
     if request.method == "POST":
@@ -198,7 +212,18 @@ def render_addword_page():
         print(request.form)
         word = request.form.get('word').strip()
         desc = request.form.get('desc').strip()
-        category = request.form.get('category').strip()
+        category = request.form.get('category').strip().lower()
+        print(category)
+        # now i have a dropdown menu, this code isn't necessary..
+
+        # category_names = fetch_category_names()
+        # print(category_names)
+        # all_categories = []
+        # for i in range(len(category_names)):
+        #     all_categories.append(category_names[i][0])
+        #
+        # if category not in all_categories:
+        #     return redirect('/addword?Category+does+not+exist')
 
         con = create_connection(DB_NAME)
 
@@ -208,7 +233,7 @@ def render_addword_page():
 
         current_datetime = datetime.utcnow()
         current_timetuple = current_datetime.utctimetuple()
-        current_timestamp = calendar.timegm(current_timetuple)*1000
+        current_timestamp = calendar.timegm(current_timetuple) * 1000
         try:
             cur.execute(query, (word, desc, username, current_timestamp, category))
         except ValueError:
@@ -217,8 +242,7 @@ def render_addword_page():
         con.close()
         return redirect('/')
 
-    return render_template('addword.html', category_name=fetch_category_names(), logged_in=is_logged_in)
-
+    return render_template('addword.html', all_categories=fetch_categories(), category_name=fetch_category_names(), logged_in=is_logged_in)
 
 
 # unique category pages for all categories
@@ -226,7 +250,7 @@ def render_addword_page():
 def render_category_page(category):
     return render_template('category.html', category_name=fetch_category_names(), cur_category=category,
                            category_words=fetch_category_words(category), logged_in=is_logged_in,
-                           category_data=fetch_categories(category), )
+                           category_data=fetch_category_data(category), )
 
 
 #  unique user pages for all users
