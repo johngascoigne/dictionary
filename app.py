@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+import calendar
 from sqlite3 import Error
 
 from flask import Flask, render_template, request, redirect, session
@@ -188,6 +189,36 @@ def render_signup_page():
         return redirect('/login')
 
     return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in)
+
+@app.route('/addword', methods=['GET', 'POST'])
+def render_addword_page():
+    if request.method == "POST":
+        username = session.get('username')
+
+        print(request.form)
+        word = request.form.get('word').strip()
+        desc = request.form.get('desc').strip()
+        category = request.form.get('category').strip()
+
+        con = create_connection(DB_NAME)
+
+        query = "INSERT INTO word(id, name, description, added_by, timestamp, in_category) VALUES(NULL,?,?,?,?,?)"
+
+        cur = con.cursor()
+
+        current_datetime = datetime.utcnow()
+        current_timetuple = current_datetime.utctimetuple()
+        current_timestamp = calendar.timegm(current_timetuple)*1000
+        try:
+            cur.execute(query, (word, desc, username, current_timestamp, category))
+        except ValueError:
+            return redirect('/')
+        con.commit()
+        con.close()
+        return redirect('/')
+
+    return render_template('addword.html', category_name=fetch_category_names(), logged_in=is_logged_in)
+
 
 
 # unique category pages for all categories
