@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}uzi add category{% endblock %}
+
+{% block main %}
+<form class="myform" method="post">
+    <div class="form-group">
+        <div class="form-label">Category</div>
+        <div class="form-element"><input id="name" name="name" type="text" required></div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-label">Description</div>
+        <div class="form-element"><input id="desc" name="desc" type="text" required></div>
+    </div>
+    <div class="button-group"><input type="submit" value="Submit">
+    </div>
+</form>
+{% endblock %}
+
+

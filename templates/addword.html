@@ -11,17 +11,17 @@
 
     <div class="form-group">
         <div class="form-label">Description</div>
-        <div class="form-element"><input id="desc" name="desc" type="desc" required></div>
+        <div class="form-element"><input id="desc" name="desc" type="text" required></div>
     </div>
 
     <div class="formGroup">
-<!--        dropdownm-->
+        <!--        dropdownm-->
         <label class="formLabel" required>Choose a category:</label>
-            <select name="category" id="category">
-                {% for category in all_categories %}
-                    <option class="formElement" value={{ category[1] }} >{{ category[1] }}</option>
-                {% endfor %}
-            </select>
+        <label for="category"></label><select name="category" id="category">
+            {% for category in all_categories %}
+            <option class="form-element" value={{ category[1] }}>{{ category[1] }}</option>
+            {% endfor %}
+        </select>
         <br><br>
     </div>
 
@@ -29,3 +29,5 @@
     </div>
 </form>
 {% endblock %}
+
+

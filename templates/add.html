@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}uzi add word{% endblock %}
+
+{% block main %}
+<form class="myform" method="post">
+    <div class="create">
+        <div class="form-label">Word</div>
+        <input type="radio" value="word" name="create">
+        <div class="form-label">Category</div>
+        <input type="radio" value="category" name="create">
+    </div>
+    <div class="button-group"><input type="submit" value="Submit"></div>
+</form>
+{% endblock %}

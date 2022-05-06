@@ -126,12 +126,12 @@ def create_connection(db_file):
 
 @app.route('/')
 def render_homepage():
-    return render_template('home.html', category_name=fetch_category_names(), logged_in=is_logged_in)
+    return render_template('home.html', category_name=fetch_category_names(), logged_in=is_logged_in())
 
 
 @app.route('/contact')
 def render_contact_page():
-    return render_template('contact.html', category_name=fetch_category_names(), logged_in=is_logged_in)
+    return render_template('contact.html', category_name=fetch_category_names(), logged_in=is_logged_in())
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -201,11 +201,26 @@ def render_signup_page():
         con.close()
         return redirect('/login')
 
-    return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in)
+    return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in())
 
 
-@app.route('/addword', methods=['GET', 'POST'])
+# main add page with radio buttons
+@app.route('/add', methods=['GET', 'POST'])
+def render_add_page():
+    if not is_logged_in():
+        return redirect('/?error=Not+logged+in')
+    if request.method == "POST":
+        response = request.form['create']
+        return redirect('/add/' + str(response))
+    return render_template('add.html', category_name=fetch_category_names()
+                           , logged_in=is_logged_in(), )
+
+
+# redirects to this if u select the word radio button
+@app.route('/add/word', methods=['GET', 'POST'])
 def render_addword_page():
+    if not is_logged_in():
+        return redirect('/?error=Not+logged+in')
     if request.method == "POST":
         username = session.get('username')
 
@@ -242,14 +257,43 @@ def render_addword_page():
         con.close()
         return redirect('/')
 
-    return render_template('addword.html', all_categories=fetch_categories(), category_name=fetch_category_names(), logged_in=is_logged_in)
+    return render_template('addword.html', all_categories=fetch_categories(), category_name=fetch_category_names(),
+                           logged_in=is_logged_in())
+
+
+# and to this if you select category
+@app.route('/add/category', methods=['GET', 'POST'])
+def render_addcategory_page():
+    if not is_logged_in():
+        return redirect('/?error=Not+logged+in')
+    if request.method == "POST":
+        print(request.form)
+        name = request.form.get('name').strip()
+        desc = request.form.get('desc').strip()
+
+        con = create_connection(DB_NAME)
+
+        query = "INSERT INTO category(id, name, description) VALUES(NULL,?,?)"
+
+        cur = con.cursor()
+
+        try:
+            cur.execute(query, (name, desc))
+        except ValueError:
+            return redirect('/')
+        con.commit()
+        con.close()
+        return redirect('/')
+
+    return render_template('addcategory.html', all_categories=fetch_categories(), category_name=fetch_category_names(),
+                           logged_in=is_logged_in())
 
 
 # unique category pages for all categories
 @app.route('/category/<category>')
 def render_category_page(category):
     return render_template('category.html', category_name=fetch_category_names(), cur_category=category,
-                           category_words=fetch_category_words(category), logged_in=is_logged_in,
+                           category_words=fetch_category_words(category), logged_in=is_logged_in(),
                            category_data=fetch_category_data(category), )
 
 
@@ -260,7 +304,7 @@ def render_user_page(username):
     authored_words = len(word_query)  # get the number of authored words (to be displayed on the user's page)
     return render_template('user.html', category_name=fetch_category_names(), cur_user=username,
                            user_words=word_query, authored_word_count=authored_words,
-                           logged_in=is_logged_in, )
+                           logged_in=is_logged_in(), )
 
 
 def is_logged_in():
