@@ -30,9 +30,7 @@
 }
 
 main {
-    padding-top: 2.5em;
-    padding-bottom: 2.5em;
-
+    padding: 2.5em 0;
 }
 
 ul {
@@ -122,13 +120,13 @@ footer a {
     font-size: 16px;
     border: none;
     cursor: pointer;
+    transition: background-color .2s;
     background-color: var(--dark);
     color: var(--white);
 }
 
 .dropbtn {
-    transition: background-color .2s;
-    background-color: var(--dark);
+
 }
 
 .dropbtn > img {
@@ -165,7 +163,8 @@ footer a {
     background-color: var(--accent);
     transition: background-color .2s;
 }
-.dropdown a{
+
+.dropdown a {
     background-color: var(--dark);
     transition: background-color .2s;
 }
@@ -174,16 +173,16 @@ footer a {
     display: block;
 }
 
-.word_title {
+.word-title {
     font-size: 18px;
     font-weight: bold;
 }
 
-.word_author {
+.word-author {
     color: #666;
 }
 
-.user_page_accent {
+.user-page-accent {
     color: var(--accent);
 }
 

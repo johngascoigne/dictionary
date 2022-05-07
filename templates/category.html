@@ -9,8 +9,8 @@
 
 {% for word in category_words %}
 <br>
-<div class="word_title">{{ word[1] }}</div>
-<div class="word_description">{{ word[2] }}</div>
-<div class="word_author"> submitted by <a href="/user/{{ word[3] }}">{{ word[3] }}</a> on {{ word[4] }}</div>
+<div class="word-title">{{ word[1] }}</div>
+<div class="word-description">{{ word[2] }}</div>
+<div class="word-author"> submitted by <a href="/user/{{ word[3] }}">{{ word[3] }}</a> on {{ word[4] }}</div>
 {% endfor %}
 {% endblock %}
