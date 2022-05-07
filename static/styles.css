@@ -71,6 +71,28 @@ li a:hover {
     transition: background-color .2s;
 }
 
+.header-container {
+    position: absolute;
+      width: 100%;
+      padding: 10px;
+    text-align: center;
+    color: var(--white);
+    font-size:24px;
+    pointer-events: none
+
+}
+
+/*.header-title {*/
+/*    display: flex;*/
+/*    text-align: center;*/
+/*    z-index: 10;*/
+/*    margin-left: 47%;*/
+/*    margin-right: 47%;*/
+/*    padding-top: 6px;*/
+/*    color: var(--white);*/
+/*}*/
+
+
 .left-button-element {
     float: left;
 }
