@@ -14,9 +14,9 @@
         <div class="form-element"><input id="desc" name="desc" type="text" required></div>
     </div>
 
-    <div class="formGroup">
+    <div class="form-group">
         <!--        dropdownm-->
-        <label class="formLabel" required>Choose a category:</label>
+        <label class="form-label" required>Choose a category:</label>
         <label for="category"></label><select name="category" id="category">
             {% for category in all_categories %}
             <option class="form-element" value={{ category[1] }}>{{ category[1] }}</option>

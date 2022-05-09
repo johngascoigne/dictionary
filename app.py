@@ -1,6 +1,6 @@
+import calendar
 import sqlite3
 from datetime import datetime
-import calendar
 from sqlite3 import Error
 
 from flask import Flask, render_template, request, redirect, session
@@ -9,6 +9,10 @@ DB_NAME = "dictionary.db"
 
 app = Flask(__name__)
 app.secret_key = "banana"
+
+
+def remove(string):
+    return string.replace(" ", "+")
 
 
 # fetch all words in a certain category
@@ -225,10 +229,12 @@ def render_addword_page():
         username = session.get('username')
 
         print(request.form)
-        word = request.form.get('word').strip()
-        desc = request.form.get('desc').strip()
-        category = request.form.get('category').strip().lower()
+        word = request.form.get('word')
+        desc = request.form.get('desc')
+        category_request = request.form.get('category').lower()
+        category = remove(category_request)
         print(category)
+
         # now i have a dropdown menu, this code isn't necessary..
 
         # category_names = fetch_category_names()
@@ -268,8 +274,8 @@ def render_addcategory_page():
         return redirect('/?error=Not+logged+in')
     if request.method == "POST":
         print(request.form)
-        name = request.form.get('name').strip()
-        desc = request.form.get('desc').strip()
+        name = request.form.get('name')
+        desc = request.form.get('desc')
 
         con = create_connection(DB_NAME)
 
