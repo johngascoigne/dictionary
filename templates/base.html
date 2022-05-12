@@ -18,6 +18,7 @@
                 <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn"><img src="/static/icons/sidebar-icon.svg"></button>
                     <div id="myDropdown" class="dropdown-content">
+                        <a href="/category/all">All</a>
                         {% for category in category_name %}
                         <a href="/category/{{ category[0] }}">{{ category[1] }}</a>
                         {% endfor %}
@@ -35,8 +36,7 @@
 
 
             <script>
-                /* When the user clicks on the button,
-                toggle between hiding and showing the dropdown content */
+                // When the user clicks on the button, toggle between hiding and showing the dropdown content
                 function myFunction() {
                     document.getElementById("myDropdown").classList.toggle("show");
                 }

@@ -4,15 +4,49 @@ from datetime import datetime
 from sqlite3 import Error
 
 from flask import Flask, render_template, request, redirect, session
+from flask_bcrypt import Bcrypt
 
 DB_NAME = "dictionary.db"
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 app.secret_key = "banana"
+
+
+def create_connection(db_file):
+    try:
+        connection = sqlite3.connect(db_file)
+        connection.execute('pragma foreign_keys=ON')
+        return connection
+    except Error as e:
+        print(e)
+
+    return None
 
 
 def remove(string):
     return string.replace(" ", "+")
+
+
+def fetch_all_words():
+    con = create_connection(DB_NAME)
+
+    query = "SELECT * FROM word"
+
+    cur = con.cursor()
+    cur.execute(query, )
+    word_query = cur.fetchall()
+
+    con.close()
+    fetched_words = []
+    for i in word_query:
+        x = int(i[4])
+        x /= 1000
+        fetched_words.append(
+            [i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
+
+    con.close()
+    return fetched_words
 
 
 # fetch all words in a certain category
@@ -301,6 +335,12 @@ def render_category_page(category):
     return render_template('category.html', category_name=fetch_category_names(), cur_category=category,
                            category_words=fetch_category_words(category), logged_in=is_logged_in(),
                            category_data=fetch_category_data(category), )
+
+
+@app.route('/category/all')
+def render_all_words_page():
+    return render_template('allwords.html', category_name=fetch_category_names(), logged_in=is_logged_in(),
+                           all_words=fetch_all_words(), )
 
 
 #  unique user pages for all users
