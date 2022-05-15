@@ -112,7 +112,7 @@ def fetch_category_names():
     con.close()
     return lower_categories
 
-
+# get tha categories
 def fetch_categories():
     con = create_connection(DB_NAME)
 
@@ -336,7 +336,7 @@ def render_category_page(category):
                            category_words=fetch_category_words(category), logged_in=is_logged_in(),
                            category_data=fetch_category_data(category), )
 
-
+# all words on one page :D
 @app.route('/category/all')
 def render_all_words_page():
     return render_template('allwords.html', category_name=fetch_category_names(), logged_in=is_logged_in(),
