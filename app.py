@@ -58,7 +58,6 @@ def fetch_category_words(passed_category):
     cur = con.cursor()
     cur.execute(query, (passed_category,))
     word_query = cur.fetchall()
-
     con.close()
     fetched_words = []
     for i in word_query:
@@ -265,9 +264,7 @@ def render_addword_page():
         print(request.form)
         word = request.form.get('word')
         desc = request.form.get('desc')
-        category_request = request.form.get('category').lower()
-        category = remove(category_request)
-        print(category)
+        category = request.form.get('category').lower()
 
         # now i have a dropdown menu, this code isn't necessary..
 
@@ -352,6 +349,29 @@ def render_user_page(username):
                            user_words=word_query, authored_word_count=authored_words,
                            logged_in=is_logged_in(), )
 
+@app.route('/remove_word/<word>')
+def render_word_remove_page(word):
+
+    if not is_logged_in():
+        return redirect('/?error=Not+logged+in')
+
+    con = create_connection(DB_NAME)
+
+    query = "DELETE FROM word WHERE id=?"
+    cur = con.cursor()
+
+    cur.execute(query, (word,))
+
+    con.commit()
+
+    query = "DELETE FROM word WHERE name=?"
+    cur = con.cursor()
+
+    cur.execute(query, (word,))
+    con.commit()
+    con.close()
+
+    return redirect('/')
 
 def is_logged_in():
     if session.get("email") is None:

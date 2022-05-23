@@ -8,8 +8,11 @@
 <h2>{{ cur_user }}'s authored words ({{ authored_word_count }})</h2>
 
 {% for word in user_words %}
+<div class="word-title">{{ word[1] }}</div>
+<div class="word-description">{{ word[2] }}</div>
+<div class="word-author"> {{ word[3] }} submitted this on {{ word[4] }}</div>
+<div class="warning-button"><a href="/remove_word/{{ word[1] }}"> delete this word?</a></div>
 <br>
-<div class="word-title">{{ word[1] }}</div> <div class="word-description">{{ word[2] }}</div><div class="word-author"> {{ word[3] }} submitted this on {{ word[4] }}</div>
 {% endfor %}
 {% endblock %}
 
