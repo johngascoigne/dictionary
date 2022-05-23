@@ -184,7 +184,7 @@ def render_login_page():
         email = request.form['email'].strip().lower()
         password = request.form['password'].strip()
 
-        query = "SELECT id, username, password FROM user WHERE email = ?"
+        query = "SELECT id, username, password, is_admin FROM user WHERE email = ?"
         con = create_connection(DB_NAME)
         cur = con.cursor()
         cur.execute(query, (email,))
@@ -195,6 +195,7 @@ def render_login_page():
             userid = user_data[0][0]
             username = user_data[0][1]
             db_password = user_data[0][2]
+            admin = user_data[0][3]
         except IndexError:
             return redirect('/login?error=Email+or+password+incorrect')
 
@@ -204,9 +205,10 @@ def render_login_page():
         session['email'] = email
         session['userid'] = userid
         session['username'] = username
+        session['admin'] = admin
         print(session)
         return redirect('/')
-    return render_template('login.html', category_name=fetch_category_names(), logged_in=is_logged_in(), )
+    return render_template('login.html', category_name=fetch_category_names(), logged_in=is_logged_in(),)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -395,25 +397,11 @@ def is_logged_in():
         return True
 
 def is_admin():
-    user = session.get("username")
-
-    con = create_connection(DB_NAME)
-
-    query = "SELECT is_admin FROM user WHERE username=?"
-    cur = con.cursor()
-
-    admin = cur.fetchall()
-
-    cur.execute(query, (user,))
-    con.commit()
-    con.close()
-    print(admin)
-
-    if admin == 1:
+    if is_logged_in() and session.get('admin') == 1:
         return True
-        print("y")
+        print("user is admin")
     else:
         return False
-        print("n")
+        print("user isnt admin")
 
 app.run(host='0.0.0.0', debug=True)

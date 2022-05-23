@@ -11,7 +11,9 @@
 <div class="word-title">{{ word[1] }}</div>
 <div class="word-description">{{ word[2] }}</div>
 <div class="word-author"> {{ word[3] }} submitted this on {{ word[4] }}</div>
+{% if admin %}
 <div class="warning-button"><a href="/remove_word/{{ word[1] }}"> delete this word?</a></div>
+{% endif %}
 <br>
 {% endfor %}
 {% endblock %}
