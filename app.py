@@ -163,12 +163,12 @@ def create_connection(db_file):
 
 @app.route('/')
 def render_homepage():
-    return render_template('home.html', category_name=fetch_category_names(), logged_in=is_logged_in())
+    return render_template('home.html', category_name=fetch_category_names(), logged_in=is_logged_in(), admin=is_admin())
 
 
 @app.route('/contact')
 def render_contact_page():
-    return render_template('contact.html', category_name=fetch_category_names(), logged_in=is_logged_in())
+    return render_template('contact.html', category_name=fetch_category_names(), logged_in=is_logged_in(), admin=is_admin())
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -213,10 +213,16 @@ def render_login_page():
 def render_signup_page():
     if request.method == "POST":
         print(request.form)
-        username = request.form.get('username').strip().title()
+        username = request.form.get('username').strip()
         email = request.form.get('email').strip().lower()
         password = request.form.get('password').strip()
         password2 = request.form.get('password2').strip()
+        admin = request.form.get('admin')
+
+        if admin:
+            admin = 1
+        elif not admin:
+            admin = 0
 
         if password != password2:
             return redirect('/signup?error=Passwords+dont+match')
@@ -226,19 +232,19 @@ def render_signup_page():
 
         con = create_connection(DB_NAME)
 
-        query = "INSERT INTO user(id, username, email, password) VALUES(NULL,?,?,?,?)"
+        query = "INSERT INTO user(id, username, email, password, is_admin) VALUES(NULL,?,?,?,?)"
 
         cur = con.cursor()
 
         try:
-            cur.execute(query, (username, email, password))
+            cur.execute(query, (username, email, password, admin))
         except sqlite3.IntegrityError:
             return redirect('/signup?error=Email+is+already+taken')
         con.commit()
         con.close()
         return redirect('/login')
 
-    return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in())
+    return render_template('signup.html', category_name=fetch_category_names(), logged_in=is_logged_in(), )
 
 
 # main add page with radio buttons
@@ -250,7 +256,7 @@ def render_add_page():
         response = request.form['create']
         return redirect('/add/' + str(response))
     return render_template('add.html', category_name=fetch_category_names()
-                           , logged_in=is_logged_in(), )
+                           , logged_in=is_logged_in(), admin=is_admin())
 
 
 # redirects to this if u select the word radio button
@@ -295,7 +301,7 @@ def render_addword_page():
         return redirect('/')
 
     return render_template('addword.html', all_categories=fetch_categories(), category_name=fetch_category_names(),
-                           logged_in=is_logged_in())
+                           logged_in=is_logged_in(), admin=is_admin())
 
 
 # and to this if you select category
@@ -323,7 +329,7 @@ def render_addcategory_page():
         return redirect('/')
 
     return render_template('addcategory.html', all_categories=fetch_categories(), category_name=fetch_category_names(),
-                           logged_in=is_logged_in())
+                           logged_in=is_logged_in(), admin=is_admin())
 
 
 # unique category pages for all categories
@@ -331,13 +337,13 @@ def render_addcategory_page():
 def render_category_page(category):
     return render_template('category.html', category_name=fetch_category_names(), cur_category=category,
                            category_words=fetch_category_words(category), logged_in=is_logged_in(),
-                           category_data=fetch_category_data(category), )
+                           category_data=fetch_category_data(category), admin=is_admin())
 
 # all words on one page :D
 @app.route('/category/all')
 def render_all_words_page():
     return render_template('allwords.html', category_name=fetch_category_names(), logged_in=is_logged_in(),
-                           all_words=fetch_all_words(), )
+                           all_words=fetch_all_words(), admin=is_admin())
 
 
 #  unique user pages for all users
@@ -347,7 +353,7 @@ def render_user_page(username):
     authored_words = len(word_query)  # get the number of authored words (to be displayed on the user's page)
     return render_template('user.html', category_name=fetch_category_names(), cur_user=username,
                            user_words=word_query, authored_word_count=authored_words,
-                           logged_in=is_logged_in(), )
+                           logged_in=is_logged_in(), admin=is_admin())
 
 @app.route('/remove_word/<word>')
 def render_word_remove_page(word):
@@ -373,6 +379,13 @@ def render_word_remove_page(word):
 
     return redirect('/')
 
+@app.route('/logout')
+def render_logout_page():
+    print(list(session.keys()))
+    [session.pop(key) for key in list(session.keys())]
+    print(list(session.keys()))
+    return redirect('/?laters+g')
+
 def is_logged_in():
     if session.get("email") is None:
         print("Not logged in")
@@ -381,5 +394,26 @@ def is_logged_in():
         print("Logged in")
         return True
 
+def is_admin():
+    user = session.get("username")
+
+    con = create_connection(DB_NAME)
+
+    query = "SELECT is_admin FROM user WHERE username=?"
+    cur = con.cursor()
+
+    admin = cur.fetchall()
+
+    cur.execute(query, (user,))
+    con.commit()
+    con.close()
+    print(admin)
+
+    if admin == 1:
+        return True
+        print("y")
+    else:
+        return False
+        print("n")
 
 app.run(host='0.0.0.0', debug=True)
