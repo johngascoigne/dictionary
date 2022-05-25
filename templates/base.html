@@ -19,7 +19,7 @@
                     <button onclick="myFunction()" class="dropbtn"><img src="/static/icons/sidebar-icon.svg"></button>
                     <div id="myDropdown" class="dropdown-content">
                         <a href="/category/all">All</a>
-                        {% for category in category_name %}
+                        {% for category in categories %}
                         <a href="/category/{{ category[0] }}">{{ category[1] }}</a>
                         {% endfor %}
                     </div>

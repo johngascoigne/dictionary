@@ -18,7 +18,7 @@
         <!--        dropdownm-->
         <label class="form-label" required>Choose a category:</label>
         <label for="category"></label><select name="category" id="category">
-            {% for category in all_categories %}
+            {% for category in categories %}
             <option class="form-element" value={{ category[1] }}>{{ category[1] }}</option>
             {% endfor %}
         </select>

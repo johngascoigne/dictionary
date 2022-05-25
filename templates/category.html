@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}uzi fan | {{ cur_category }} {% endblock %}
+{% block title %}uzi fan | {{ category_data[0][1] }} {% endblock %}
 
 {% block main %}
-<h1>{{ cur_category }}</h1>
+<h1>{{ category_data[0][1] }}</h1>
 
-<h2>{{ category_data[2] }}</h2>
+<h2>{{ category_data[0][2] }}</h2>
 
 {% for word in category_words %}
 
-<div class="word-title">{{ word[1] }}</div>
+<div class="word-title"><a href="/word/{{ word[0] }}">{{ word[1] }}</a></div>
 <div class="word-description">{{ word[2] }}</div>
 <div class="word-author"> submitted by <a href="/user/{{ word[3] }}">{{ word[3] }}</a> on {{ word[4] }}</div>
 {% if admin %}
-<div class="warning-button"><a href="/remove_word/{{ word[1] }}" > delete this word?</a></div>
+<div class="warning-button"><a href="/remove_word/{{ word[0] }}" > delete this word?</a></div>
 {% endif %}
 <br>
 {% endfor %}

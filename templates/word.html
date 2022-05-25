@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}uzi fan | {{ word_data[0][1] }} {% endblock %}
+
+{% block main %}
+{% for data in word_data %}
+
+<h1>{{ data[1] }}</h1>
+<h2>{{ data[2] }}</h2>
+<div class="word-author"> submitted by <a href="/user/{{ data[3] }}">{{ data[3] }}</a> on {{ data[4] }}</div><br>
+<div class="word-author"> in category <a href="/category/{{ data[5] }}">{{ data[5] }}</a></div>
+{% if admin %}<br>
+<div class="warning-button"><a href="/remove_word/{{ data[0] }}" > delete this word?</a></div>
+{% endif %}
+
+
+{% endfor %}
+{% endblock %}
