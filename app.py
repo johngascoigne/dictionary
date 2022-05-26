@@ -12,7 +12,15 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.secret_key = "banana"
 
+# made a function for this, cause i use it so much
+def timestamp_and_data(list, target_list):
+    for i in list:
+        x = int(i[5])
+        x /= 1000
+        target_list.append(
+            [i[0], i[1], i[2], i[3], i[4], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[6], i[7]])
 
+# create the connection. ya know
 def create_connection(db_file):
     try:
         connection = sqlite3.connect(db_file)
@@ -23,23 +31,20 @@ def create_connection(db_file):
 
     return None
 
-
+# fetches all words ( for category: allwords )
 def fetch_all_words():
     con = create_connection(DB_NAME)
 
-    query = "SELECT * FROM word"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word"
 
     cur = con.cursor()
     cur.execute(query, )
-    word_query = cur.fetchall()
 
+    word_query = cur.fetchall()
     con.close()
+
     fetched_words = []
-    for i in word_query:
-        x = int(i[4])
-        x /= 1000
-        fetched_words.append(
-            [i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
+    timestamp_and_data(word_query, fetched_words)
 
     con.close()
     return fetched_words
@@ -58,7 +63,7 @@ def fetch_category_words(passed_category):
 
     found_category_name = found_category_name[0][0].lower()
 
-    query = "SELECT id, name, description, added_by, timestamp, in_category FROM word WHERE in_category=?"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word WHERE in_category=?"
 
     cur = con.cursor()
 
@@ -66,11 +71,7 @@ def fetch_category_words(passed_category):
     word_query = cur.fetchall()
     con.close()
     fetched_words = []
-    for i in word_query:
-        x = int(i[4])
-        x /= 1000
-        fetched_words.append(
-            [i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
+    timestamp_and_data(word_query, fetched_words)
 
     con.close()
     return fetched_words
@@ -80,7 +81,7 @@ def fetch_category_words(passed_category):
 def fetch_authored_words(passed_user):
     con = create_connection(DB_NAME)
 
-    query = "SELECT id, name, description, added_by, timestamp, in_category FROM word WHERE added_by=?"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word WHERE added_by=?"
 
     cur = con.cursor()
     cur.execute(query, (passed_user,))
@@ -88,11 +89,7 @@ def fetch_authored_words(passed_user):
 
     con.close()
     fetched_words = []
-    for i in word_query:
-        x = int(i[4])
-        x /= 1000
-        fetched_words.append(
-            [i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
+    timestamp_and_data(word_query, fetched_words)
 
     return fetched_words
 
@@ -128,18 +125,15 @@ def fetch_category_data(category_id):
 def fetch_word_data(word):
     con = create_connection(DB_NAME)
 
-    query = "SELECT * FROM word WHERE id=?"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word WHERE id=?"
 
     cur = con.cursor()
     cur.execute(query, (word,))
     fetched_word = cur.fetchall()
 
     word_data = []
-    for i in fetched_word:
-        x = int(i[4])
-        x /= 1000
-        word_data.append(
-            [i[0], i[1], i[2], i[3], datetime.utcfromtimestamp(x).strftime('%Y-%m-%d at %H:%M:%S'), i[5]])
+
+    timestamp_and_data(fetched_word, word_data)
 
     con.close()
     return word_data
@@ -264,7 +258,8 @@ def render_addword_page():
         username = session.get('username')
 
         print(request.form)
-        word = request.form.get('word')
+        english = request.form.get('english')
+        maori = request.form.get('maori')
         desc = request.form.get('desc')
         category = request.form.get('category').lower()
 
@@ -281,7 +276,7 @@ def render_addword_page():
 
         con = create_connection(DB_NAME)
 
-        query = "INSERT INTO word(id, name, description, added_by, timestamp, in_category) VALUES(NULL,?,?,?,?,?)"
+        query = "INSERT INTO word(id, english, maori, description, added_by, timestamp, in_category) VALUES(NULL,?,?,?,?,?,?)"
 
         cur = con.cursor()
 
@@ -289,7 +284,7 @@ def render_addword_page():
         current_timetuple = current_datetime.utctimetuple()
         current_timestamp = calendar.timegm(current_timetuple) * 1000
         try:
-            cur.execute(query, (word, desc, username, current_timestamp, category))
+            cur.execute(query, (english, maori, desc, username, current_timestamp, category))
         except ValueError:
             return redirect('/')
         con.commit()

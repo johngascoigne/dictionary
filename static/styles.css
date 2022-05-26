@@ -210,6 +210,10 @@ footer a {
     color: #666;
 }
 
+.word-image {
+padding: 10px;
+}
+
 .user-page-accent {
     color: var(--accent);
 }
@@ -221,3 +225,4 @@ footer a {
 .warning-button a {
     color: orangered !important;
 }
+
