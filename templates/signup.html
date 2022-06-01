@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}j dictionary | sign up{% endblock %}
+
+{% block main %}
+<form class="myform" method="post">
+    <div class="form-group">
+        <div class="form-label">Username:</div>
+        <div class="form-element"><input id="username" name="username" type="text" required></div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-label">Email:</div>
+        <div class="form-element"><input id="email" name="email" type="email" required></div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-label">Password:</div>
+        <div class="form-element"><input id="password" name="password" type="password" required></div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-label">Re-enter your password:</div>
+        <div class="form-element"><input id="password2" name="password2" type="password" required></div>
+    </div>
+    Are you an Admin?
+    <div class="form-group">
+        <div class="form-label">Yes</div>
+        <input type="radio" value="True" name="admin" required>
+        <div class="form-label">No</div>
+        <input type="radio" value="False" name="admin" required>
+    </div>
+
+    <div class="button-group"><input type="submit" value="Submit">
+    </div>
+</form>
+{% endblock %}

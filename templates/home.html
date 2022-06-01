@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}j dictionary | home {% endblock %}
+
+{% block main %}
+
+{% if logged_in %}
+<h1>Hello, Welcome to J DICTIONARY, <a href="/user/{{ cur_user }}">{{ cur_user }}</a>!</h1>
+
+<h2 class="warning-button"><a href="/logout">logout</a></h2>
+
+{% if admin %}
+<h2>You're an admin. Consider <a href="/add">contributing?</a></h2>
+{% endif %}
+
+{% else %}
+<h1>Hello, Welcome to J DICTIONARY!</h1>
+<h2><a href="/login">log in</a></h2> or <h2><a href="/signup">sign up</a></h2>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}j dictionary | add word{% endblock %}
+
+{% block main %}
+<form class="myform" method="post">
+    <div class="form-group">
+        <div class="form-label">English</div>
+        <div class="form-element"><input id="english" name="english" type="text" required></div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-label">Māori</div>
+        <div class="form-element"><input id="maori" name="maori" type="text" required></div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-label">Description</div>
+        <div class="form-element"><input id="desc" name="desc" type="text" required></div>
+    </div>
+
+    <div class="form-group">
+        <!--        dropdownm-->
+        <label class="form-label" required>Choose a category:</label>
+        <label for="category"></label><select name="category" id="category">
+            {% for category in categories %}
+            <option class="form-element" value={{ category[1] }}>{{ category[1] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+    </div>
+
+    <div class="button-group"><input type="submit" value="Submit">
+    </div>
+</form>
+{% endblock %}
+
+

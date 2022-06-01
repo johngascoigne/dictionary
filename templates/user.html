@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}j dictionary | {{ cur_user }} {% endblock %}
+
+{% block main %}
+<h1>welcome to <span class="user-page-accent">{{ cur_user }}</span>'s userpage</h1>
+
+<h2>{{ cur_user }}'s authored words ({{ authored_word_count }})</h2>
+
+{% for word in user_words %}
+<div class="word-title"><a href="/word/{{ word[0] }}">{{ word[2] }} - {{ word[1] }}</a></div>
+
+<div class="word-description">{{ word[3] }}</div>
+<div class="word-author"> {{ word[4] }} submitted this on {{ word[5] }}</div>
+{% if admin %}
+<div class="warning-button"><a href="/remove_word/{{ word[0] }}"> delete this word?</a></div>
+{% endif %}
+<br>
+{% endfor %}
+{% endblock %}
+

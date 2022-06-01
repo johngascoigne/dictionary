@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="Description" content="Author: john gasc, Content: A dictionary to convert maori words to english.">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+
+<body>
+<div id="container">
+    <header>
+        <h1>{% block heading %}{% endblock %}</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li class="left-button-element">
+                <div class="dropdown">
+                    <button onclick="myFunction()" class="dropbtn"><img src="/static/icons/sidebar-icon.svg"></button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="/category/all">All</a>
+                        {% for category in categories %}
+                        <a href="/category/{{ category[0] }}">{{ category[1] }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </li>
+            <li><a href="/"><img src="/static/icons/home-icon.svg"></a></li>
+            <li><a href="/login"><img src="/static/icons/user-icon.svg"></a></li>
+            <li><a href="/contact"><img src="/static/icons/info-icon.svg"></a></li>
+            <div class="header-container">J DICTIONARY</div>
+
+
+
+            <script>
+                // toggle dropdown content
+                function myFunction() {
+                    document.getElementById("myDropdown").classList.toggle("show");
+                }
+
+                // close the dropdown if the user clicks outside of it
+                window.onclick = function (event) {
+                    if (!event.target.matches('.dropbtn')) {
+                        var dropdowns = document.getElementsByClassName("dropdown-content");
+                        var i;
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                        }
+                    }
+                }
+            </script>
+
+        </ul>
+    </nav>
+
+    <main>
+        {% block main%}{% endblock %}
+    </main>
+
+
+    <footer>
+        <p>
+            &copy; J DICTIONARY. ALL RIGHTS RESERVED.<br>
+            <a href="/contact">Contact</a>
+        </p>
+    </footer>
+
+</div>
+</body>
+</html>
