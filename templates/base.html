@@ -25,6 +25,9 @@
                     </div>
                 </div>
             </li>
+            {% if logged_in and admin %}
+            <li class="left-button-element"><a href="/add"><img src="/static/icons/plus-icon.svg"></a></li>
+            {% endif %}
             <li><a href="/"><img src="/static/icons/home-icon.svg"></a></li>
             <li><a href="/login"><img src="/static/icons/user-icon.svg"></a></li>
             <li><a href="/contact"><img src="/static/icons/info-icon.svg"></a></li>

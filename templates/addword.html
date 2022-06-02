@@ -3,7 +3,7 @@
 {% block title %}j dictionary | add word{% endblock %}
 
 {% block main %}
-<form class="myform" method="post">
+<form class="myform" method="post" xmlns="http://www.w3.org/1999/html">
     <div class="form-group">
         <div class="form-label">English</div>
         <div class="form-element"><input id="english" name="english" type="text" required></div>
@@ -23,13 +23,28 @@
         <!--        dropdownm-->
         <label class="form-label" required>Choose a category:</label>
         <label for="category"></label><select name="category" id="category">
-            {% for category in categories %}
-            <option class="form-element" value={{ category[1] }}>{{ category[1] }}</option>
-            {% endfor %}
-        </select>
+        {% for category in categories %}
+        <option class="form-element" value="{{ category[0] }}">{{ category[1] }}</option>
+        {% endfor %}
+    </select>
         <br><br>
     </div>
 
+    <div class="wordlevel">
+        <div class="form-label">Level</div>
+        <select name="wordlevel" id="wordlevel">
+        <option value="1" required>1</option>
+        <option value="2" required>2</option>
+        <option value="3" required>3</option>
+        <option value="4" required>4</option>
+        <option value="5" required>5</option>
+        <option value="6" required>6</option>
+        <option value="7" required>7</option>
+        <option value="8" required>8</option>
+        <option value="9" required>9</option>
+        <option value="10" required>10</option>
+        </select>
+    </div>
     <div class="button-group"><input type="submit" value="Submit">
     </div>
 </form>

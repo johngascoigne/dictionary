@@ -9,7 +9,9 @@
 <h2>{{ data[1] }}</h2>
 <h3>{{ data[3] }}</h3>
 <div class="word-author"> submitted by <a href="/user/{{ data[4] }}">{{ data[4] }}</a> on {{ data[5] }}</div><br>
-<div class="word-author"> in category <a href="/category/{{ data[6] }}">{{ category_name }}</a></div>
+<div class="word-author"> in category <a href="/category/{{ data[6] }}">{{ category_name }}</a></div><br>
+<div class="word-author">word level: {{ data[8] }}</div>
+
 <div class="word-image"><img src="/static/images/{{ data[7] }}" width="250px"></div>
 {% if admin %}<br>
 <div class="warning-button"><a href="/remove_word/{{ data[0] }}" > delete this word?</a></div>

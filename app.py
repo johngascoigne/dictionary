@@ -1,10 +1,9 @@
 import calendar
 import sqlite3
-import pytz
-
 from datetime import datetime
 from sqlite3 import Error
 
+import pytz
 from flask import Flask, render_template, request, redirect, session
 from flask_bcrypt import Bcrypt
 
@@ -35,7 +34,7 @@ def timestamp_and_data(list, target_list):
         timestamp = timestamp_fh + " at " + timestamp_lh
 
         target_list.append(
-            [i[0], i[1], i[2], i[3], i[4], timestamp, i[6], i[7]])
+            [i[0], i[1], i[2], i[3], i[4], timestamp, i[6], i[7], i[8]])
 
 
 def id_to_category(word):
@@ -106,14 +105,18 @@ def fetch_category_words(passed_category):
 
     found_category_id = found_category_id[0][0]
 
-    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word WHERE in_category=?"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word WHERE id=?"
 
     cur = con.cursor()
 
     cur.execute(query, (found_category_id,))
+
     word_query = cur.fetchall()
+
     con.close()
+
     fetched_words = []
+
     timestamp_and_data(word_query, fetched_words)
 
     con.close()
@@ -124,7 +127,7 @@ def fetch_category_words(passed_category):
 def fetch_authored_words(passed_user):
     con = create_connection(DB_NAME)
 
-    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word WHERE added_by=?"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word WHERE id=?"
 
     cur = con.cursor()
     cur.execute(query, (passed_user,))
@@ -168,7 +171,7 @@ def fetch_category_data(category_id):
 def fetch_word_data(word):
     con = create_connection(DB_NAME)
 
-    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image FROM word WHERE id=?"
+    query = "SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word WHERE id=?"
 
     cur = con.cursor()
     cur.execute(query, (word,))
@@ -305,15 +308,15 @@ def render_addword_page():
     if request.method == "POST":
         username = session.get('username')
 
-        print(request.form)
         english = request.form.get('english')
         maori = request.form.get('maori')
         desc = request.form.get('desc')
         category = request.form.get('category').lower()
+        wordlevel = request.form.get('wordlevel')
 
         con = create_connection(DB_NAME)
 
-        query = "INSERT INTO word(id, english, maori, description, added_by, timestamp, in_category) VALUES(NULL,?,?,?,?,?,?)"
+        query = "INSERT INTO word(id, english, maori, description, added_by, timestamp, in_category, level) VALUES(NULL,?,?,?,?,?,?,?)"
 
         cur = con.cursor()
 
@@ -321,7 +324,7 @@ def render_addword_page():
         current_timetuple = current_datetime.utctimetuple()
         current_timestamp = calendar.timegm(current_timetuple) * 1000
         try:
-            cur.execute(query, (english, maori, desc, username, current_timestamp, category))
+            cur.execute(query, (english, maori, desc, username, current_timestamp, category, wordlevel))
         except ValueError:
             return redirect('/')
         con.commit()
@@ -401,7 +404,7 @@ def render_word_page(word):
         return redirect('/?Word+does+not+exist')
 
     return render_template('word.html', categories=fetch_categories(), cur_category=word, logged_in=is_logged_in(),
-                           admin=is_admin(), word_data=fetch_word_data(word), category_name = id_to_category(word))
+                           admin=is_admin(), word_data=fetch_word_data(word), category_name=id_to_category(word))
 
 
 # all words on one page :D
