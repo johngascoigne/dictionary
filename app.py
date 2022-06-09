@@ -37,6 +37,7 @@ def timestamp_and_data(active_list, target_list):
         target_list.append(
             [i[0], i[1], i[2], i[3], i[4], timestamp, i[6], i[7], i[8]])
 
+
 # convert word's in_category id to an id and name from category table
 def id_to_category(word):
     con = create_connection(DB_NAME)
@@ -52,6 +53,7 @@ def id_to_category(word):
 
     con = create_connection(DB_NAME)
 
+    # fetches id and name from a category. uses the "in_category" id from the passed word.
     query = 'SELECT id, name FROM category WHERE id=?'
 
     cur = con.cursor()
@@ -78,6 +80,7 @@ def create_connection(db_file):
 def fetch_all_words():
     con = create_connection(DB_NAME)
 
+    # fetches all data from all words
     query = 'SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word'
 
     cur = con.cursor()
@@ -97,21 +100,13 @@ def fetch_all_words():
 def fetch_category_words(passed_category):
     con = create_connection(DB_NAME)
 
-    query = 'SELECT id FROM category WHERE id=?'
-
-    cur = con.cursor()
-
-    cur.execute(query, (passed_category,))
-    found_category_id = cur.fetchall()
-
-    found_category_id = found_category_id[0][0]
-
+    # fetches all word data from all words in a passed category
     query = 'SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word ' \
             'WHERE in_category=?'
 
     cur = con.cursor()
 
-    cur.execute(query, (found_category_id,))
+    cur.execute(query, (passed_category,))
 
     word_query = cur.fetchall()
 
@@ -129,6 +124,7 @@ def fetch_category_words(passed_category):
 def fetch_authored_words(passed_user):
     con = create_connection(DB_NAME)
 
+    # fetches all words added by a passed user
     query = 'SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word ' \
             'WHERE added_by=?'
 
@@ -147,6 +143,7 @@ def fetch_authored_words(passed_user):
 def fetch_categories():
     con = create_connection(DB_NAME)
 
+    # fetches all category data from all categories
     query = 'SELECT * FROM category'
 
     cur = con.cursor()
@@ -161,6 +158,7 @@ def fetch_categories():
 def fetch_category_data(category_id):
     con = create_connection(DB_NAME)
 
+    # fetches all data from a  passed category
     query = 'SELECT id, name, description FROM category WHERE id=?'
 
     cur = con.cursor()
@@ -170,10 +168,12 @@ def fetch_category_data(category_id):
     con.close()
     return fetched_categories
 
+
 # fetches the general word data from a specific word of id #
 def fetch_word_data(word):
     con = create_connection(DB_NAME)
 
+    # fetches word data from a passed word
     query = 'SELECT id, english, maori, description, added_by, timestamp, in_category, image, wordlevel FROM word ' \
             'WHERE id=?'
 
@@ -198,6 +198,7 @@ def create_connection(db_file):
 
     return None
 
+
 # homepage
 @app.route('/')
 def render_homepage():
@@ -205,10 +206,12 @@ def render_homepage():
     return render_template('home.html', categories=fetch_categories(), logged_in=is_logged_in(), admin=is_admin(),
                            cur_user=username, )
 
+
 # contact page
 @app.route('/contact')
 def render_contact_page():
     return render_template('contact.html', categories=fetch_categories(), logged_in=is_logged_in(), admin=is_admin())
+
 
 # login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -224,6 +227,7 @@ def render_login_page():
         email = request.form['email'].strip().lower()
         password = request.form['password'].strip()
 
+        # fetches user data from a user with an email that matches that of the passed email that they use in the login
         query = 'SELECT id, username, password, is_admin FROM user WHERE email =?'
         con = create_connection(DB_NAME)
         cur = con.cursor()
@@ -249,6 +253,7 @@ def render_login_page():
         print(session)
         return redirect('/')
     return render_template('login.html', categories=fetch_categories(), logged_in=is_logged_in(), )
+
 
 # signup page
 @app.route('/signup', methods=['GET', 'POST'])
@@ -277,6 +282,7 @@ def render_signup_page():
 
         con = create_connection(DB_NAME)
 
+        # insert data into user table
         query = 'INSERT INTO user(id, username, email, password, is_admin) VALUES(NULL,?,?,?,?)'
 
         cur = con.cursor()
@@ -319,6 +325,7 @@ def render_addword_page():
 
         con = create_connection(DB_NAME)
 
+        # insert data into word table
         query = 'INSERT INTO word(id, english, maori, description, added_by, timestamp, in_category,' \
                 ' wordlevel, image) VALUES(NULL,?,?,?,?,?,?,?,?)'
 
@@ -351,6 +358,7 @@ def render_addcategory_page():
 
         con = create_connection(DB_NAME)
 
+        # insert data into category table
         query = 'INSERT INTO category(id, name, description) VALUES(NULL,?,?)'
 
         cur = con.cursor()
@@ -370,19 +378,7 @@ def render_addcategory_page():
 # unique category pages for all categories
 @app.route('/category/<category>')
 def render_category_page(category):
-    con = create_connection(DB_NAME)
-
-    query = 'SELECT id FROM category where id=?'
-
-    cur = con.cursor()
-    cur.execute(query, (category,))
-
-    category_query = cur.fetchall()
-    con.close()
-
-    print(category_query)
-
-    if not category_query:
+    if not category:
         return redirect('/?error=Category+does+not+exist')
     return render_template('category.html', categories=fetch_categories(), cur_category=category,
                            category_words=fetch_category_words(category), logged_in=is_logged_in(),
@@ -392,19 +388,7 @@ def render_category_page(category):
 # unique category pages for all categories
 @app.route('/word/<word>')
 def render_word_page(word):
-    con = create_connection(DB_NAME)
-
-    query = 'SELECT id FROM word where id=?'
-
-    cur = con.cursor()
-    cur.execute(query, (word,))
-
-    word_query = cur.fetchall()
-    con.close()
-
-    print(word_query)
-
-    if not word_query:
+    if not word:
         return redirect('/?error=Word+does+not+exist')
 
     return render_template('word.html', categories=fetch_categories(), cur_category=word, logged_in=is_logged_in(),
@@ -421,17 +405,7 @@ def render_all_words_page():
 #  unique user pages for all users
 @app.route('/user/<username>')
 def render_user_page(username):
-    con = create_connection(DB_NAME)
-
-    query = 'SELECT id FROM user WHERE username=?'
-
-    cur = con.cursor()
-    cur.execute(query, (username,))
-
-    user_query = cur.fetchall()
-    con.close()
-
-    if not user_query:
+    if not username:
         return redirect('/?error=User+does+not+exist')
 
     word_query = fetch_authored_words(username)  # get all authored words from the user
@@ -441,6 +415,7 @@ def render_user_page(username):
                            user_words=word_query, authored_word_count=authored_words,
                            logged_in=is_logged_in(), admin=is_admin(), )
 
+
 # for removing words of specific id #'s
 @app.route('/remove_word/<word>')
 def render_word_remove_page(word):
@@ -449,6 +424,7 @@ def render_word_remove_page(word):
 
     con = create_connection(DB_NAME)
 
+    # remove word of passed id from the word table
     query = 'DELETE FROM word WHERE id=?'
     cur = con.cursor()
 
@@ -458,6 +434,7 @@ def render_word_remove_page(word):
 
     return redirect('/')
 
+
 # logout
 @app.route('/logout')
 def render_logout_page():
@@ -465,6 +442,7 @@ def render_logout_page():
     [session.pop(key) for key in list(session.keys())]
     print(list(session.keys()))
     return redirect('/?message=Goodbye!')
+
 
 # to check if the user is logged in
 def is_logged_in():
@@ -474,6 +452,7 @@ def is_logged_in():
     else:
         print('Logged in')
         return True
+
 
 # to check if the account the user has logged in with is an admin
 def is_admin():
